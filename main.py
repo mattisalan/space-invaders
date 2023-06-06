@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from pygame.locals import *
 
@@ -17,13 +19,25 @@ def main():
     spaceship = Spaceship()
     spaceship_group = pygame.sprite.GroupSingle(spaceship)
 
+    previous_time = time.time()
     # GAME LOOP
     while True:
+        # Delta time
+        time_now = time.time()
+        dt = time_now - previous_time
+        previous_time = time_now
+
         # EVENTS
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
+            
+        keys = pygame.key.get_pressed()
+        if keys[K_LEFT]:
+            spaceship.move_left(dt)
+        if keys[K_RIGHT]:
+            spaceship.move_right(dt)
             
         # GAME LOGIC
 

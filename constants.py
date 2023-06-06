@@ -7,3 +7,6 @@ WHITE = (255, 255, 255)
 
 # FPS LIMIT
 FPS = 60
+
+# SPACESHIP (pixels/second)
+SPACESHIP_SPEED = 300
