@@ -28,3 +28,6 @@ class Spaceship(pygame.sprite.Sprite):
         if self.x < 0:
             self.x = 0
         self.rect.x = round(self.x)
+
+    def get_new_bullet_pos(self) -> list[int]:
+        return [self.rect.centerx, self.rect.top]

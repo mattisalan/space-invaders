@@ -5,6 +5,7 @@ from pygame.locals import *
 
 from constants import *
 from spaceship import Spaceship
+from bullet import Bullet
 
 
 def main():
@@ -18,6 +19,7 @@ def main():
     # Game objects
     spaceship = Spaceship()
     spaceship_group = pygame.sprite.GroupSingle(spaceship)
+    bullets_group = pygame.sprite.Group()
 
     previous_time = time.time()
     # GAME LOOP
@@ -32,19 +34,24 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
-            
+        
         keys = pygame.key.get_pressed()
+        # Movement
         if keys[K_LEFT]:
             spaceship.move_left(dt)
         if keys[K_RIGHT]:
             spaceship.move_right(dt)
-            
+        # Shooting
+        if keys[K_UP]:
+            bullets_group.add(Bullet(spaceship.get_new_bullet_pos()))
         # GAME LOGIC
+        bullets_group.update(dt)
 
         # RENDER GRAPHICS
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
         spaceship_group.draw(screen)
+        bullets_group.draw(screen)
 
         # Update screen
         pygame.display.flip()
