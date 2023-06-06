@@ -11,5 +11,6 @@ FPS = 60
 # SPACESHIP (pixels/second)
 SPACESHIP_SPEED = 300
 
-# BULLETS (pixels/second)
-BULLET_SPEED = 100
+# BULLETS
+BULLET_SPEED = 100 # (pixels/second)
+BULLET_COOLDOWN = 1 # second

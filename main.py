@@ -22,6 +22,7 @@ def main():
     bullets_group = pygame.sprite.Group()
 
     previous_time = time.time()
+    last_bullet = time.time()
     # GAME LOOP
     while True:
         # Delta time
@@ -43,7 +44,11 @@ def main():
             spaceship.move_right(dt)
         # Shooting
         if keys[K_UP]:
-            bullets_group.add(Bullet(spaceship.get_new_bullet_pos()))
+            current_bullet = time.time()
+            if current_bullet - last_bullet > BULLET_COOLDOWN:
+                bullets_group.add(Bullet(spaceship.get_new_bullet_pos()))
+                last_bullet = current_bullet
+
         # GAME LOGIC
         bullets_group.update(dt)
 
