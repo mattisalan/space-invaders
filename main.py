@@ -6,6 +6,7 @@ from pygame.locals import *
 from constants import *
 from spaceship import Spaceship
 from bullet import Bullet
+from enemy import Enemy
 
 
 def main():
@@ -20,9 +21,11 @@ def main():
     spaceship = Spaceship()
     spaceship_group = pygame.sprite.GroupSingle(spaceship)
     bullets_group = pygame.sprite.Group()
+    enemies_group = pygame.sprite.Group()
 
     previous_time = time.time()
     last_bullet = time.time()
+    enemy_spawn_time = time.time()
     # GAME LOOP
     while True:
         # Delta time
@@ -50,13 +53,22 @@ def main():
                 last_bullet = current_bullet
 
         # GAME LOGIC
+        
+        # Spawn enemies
+        enemy_spawn_time_now = time.time()
+        if enemy_spawn_time_now - enemy_spawn_time > SPAWN_TIME:
+            enemies_group.add(Enemy())
+            enemy_spawn_time = enemy_spawn_time_now
+
         bullets_group.update(dt)
+        enemies_group.update(dt)
 
         # RENDER GRAPHICS
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
         spaceship_group.draw(screen)
         bullets_group.draw(screen)
+        enemies_group.draw(screen)
 
         # Update screen
         pygame.display.flip()
