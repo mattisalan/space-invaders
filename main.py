@@ -20,6 +20,9 @@ def main():
     background = pygame.image.load("img/bg.png").convert()
     bullet = pygame.image.load("img/bullet.png").convert_alpha()
     enemy_bullet = pygame.image.load("img/enemy_bullet.png").convert_alpha()
+    enemy_image = pygame.image.load("img/enemy1.png").convert()
+    enemy_image.set_colorkey((0,0,0))
+
 
     # Game objects
     spaceship = Spaceship()
@@ -65,7 +68,7 @@ def main():
         # Spawn enemies
         enemy_spawn_time_now = time.time()
         if enemy_spawn_time_now - enemy_spawn_time > SPAWN_TIME:
-            enemies_group.add(Enemy())
+            enemies_group.add(Enemy(enemy_image))
             enemy_spawn_time = enemy_spawn_time_now
 
         enemy_bullet_now = time.time()

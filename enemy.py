@@ -8,9 +8,10 @@ from constants import *
 
 class Enemy(pygame.sprite.Sprite):
 
-    def __init__(self) -> None:
+    def __init__(self, enemy_image) -> None:
         super().__init__()
-        self.image = pygame.image.load("img/enemy1.png").convert_alpha()
+        self.image = enemy_image
+        self.image.set_colorkey((0,0,0))
         self.rect = self.image.get_rect()
         
         self.rect.centerx = random.randint(50, SCREEN_WIDTH - 50)
