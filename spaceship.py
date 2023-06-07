@@ -16,6 +16,8 @@ class Spaceship(pygame.sprite.Sprite):
         # variable for floating point position
         self.x = self.rect.x
 
+        self.lives = 3
+
     def move_right(self, dt) -> None:
         self.x += SPACESHIP_SPEED * dt
         # Do not let spaceship go out of screen
@@ -31,3 +33,14 @@ class Spaceship(pygame.sprite.Sprite):
 
     def get_new_bullet_pos(self) -> list[int]:
         return [self.rect.centerx, self.rect.top]
+    
+    def check_if_hit(self, enemy_bullets_group, enemies_group):
+        bullet_hit = pygame.sprite.spritecollideany(self, enemy_bullets_group)
+        if bullet_hit is not None:
+            bullet_hit.kill()
+            self.lives -= 1
+
+        enemy_hit = pygame.sprite.spritecollideany(self, enemies_group)
+        if enemy_hit is not None:
+            enemy_hit.kill()
+            self.lives -= 1

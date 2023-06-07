@@ -78,6 +78,7 @@ def main():
         bullets_group.update(dt)
         enemy_bullets_group.update(dt)
         enemies_group.update(bullets_group, dt)
+        spaceship.check_if_hit(enemy_bullets_group, enemies_group)
 
         # RENDER GRAPHICS
         screen.blit(background, (0, 0))
