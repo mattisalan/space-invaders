@@ -25,5 +25,12 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = round(self.y)
         # Need to be killed when out of screen / game over
 
-    def update(self, dt) -> None:
+    def check_bullet_collision(self, bullets_group):
+        bullet_hit = pygame.sprite.spritecollideany(self, bullets_group)
+        if bullet_hit is not None:
+            bullet_hit.kill()
+            self.kill()
+
+    def update(self, bullets_group, dt) -> None:
         self.move_down(dt)
+        self.check_bullet_collision(bullets_group)

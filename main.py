@@ -61,7 +61,7 @@ def main():
             enemy_spawn_time = enemy_spawn_time_now
 
         bullets_group.update(dt)
-        enemies_group.update(dt)
+        enemies_group.update(bullets_group, dt)
 
         # RENDER GRAPHICS
         screen.fill(WHITE)

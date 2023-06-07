@@ -12,9 +12,9 @@ FPS = 60
 SPACESHIP_SPEED = 300
 
 # BULLETS
-BULLET_SPEED = 100 # (pixels/second)
+BULLET_SPEED = 250 # (pixels/second)
 BULLET_COOLDOWN = 1 # second
 
 # ENEMIES
 SPAWN_TIME = 1 # second
-ENEMY_SPEED = 100 # (pixels/second)
+ENEMY_SPEED = 50 # (pixels/second)
