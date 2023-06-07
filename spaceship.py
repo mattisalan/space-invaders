@@ -16,7 +16,7 @@ class Spaceship(pygame.sprite.Sprite):
         # variable for floating point position
         self.x = self.rect.x
 
-        self.lives = 3
+        self.lives = MAX_HEALTH
 
     def move_right(self, dt) -> None:
         self.x += SPACESHIP_SPEED * dt
@@ -44,3 +44,8 @@ class Spaceship(pygame.sprite.Sprite):
         if enemy_hit is not None:
             enemy_hit.kill()
             self.lives -= 1
+
+    def draw_healtbar(self, screen) -> None:
+        health_ratio = self.lives / MAX_HEALTH
+        pygame.draw.rect(screen, RED, (self.rect.x, self.rect.bottom + 10, self.rect.width, 10))
+        pygame.draw.rect(screen, GREEN, (self.rect.x, self.rect.bottom + 10, health_ratio * self.rect.width, 10))

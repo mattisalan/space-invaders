@@ -101,6 +101,7 @@ def main():
         bullets_group.draw(screen)
         enemy_bullets_group.draw(screen)
         enemies_group.draw(screen)
+        spaceship.draw_healtbar(screen)
 
         # Update screen
         pygame.display.flip()
