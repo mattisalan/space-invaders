@@ -10,6 +10,17 @@ from bullet import Bullet
 from enemy import Enemy
 
 
+def load_enemy_images() -> list:
+    images = []
+    # load the 3 enemy images from img/
+    for i in range(3):
+        image = pygame.image.load(f"img/enemy{i+1}.png").convert()
+        image.set_colorkey((0,0,0))
+        images.append(image)
+
+    return images
+
+
 def main():
     pygame.init()
     clock = pygame.time.Clock()
@@ -20,9 +31,7 @@ def main():
     background = pygame.image.load("img/bg.png").convert()
     bullet = pygame.image.load("img/bullet.png").convert_alpha()
     enemy_bullet = pygame.image.load("img/enemy_bullet.png").convert_alpha()
-    enemy_image = pygame.image.load("img/enemy1.png").convert()
-    enemy_image.set_colorkey((0,0,0))
-
+    enemy_images = load_enemy_images()
 
     # Game objects
     spaceship = Spaceship()
@@ -68,19 +77,22 @@ def main():
         # Spawn enemies
         enemy_spawn_time_now = time.time()
         if enemy_spawn_time_now - enemy_spawn_time > SPAWN_TIME:
-            enemies_group.add(Enemy(enemy_image))
+            enemies_group.add(Enemy(random.choice(enemy_images)))
             enemy_spawn_time = enemy_spawn_time_now
 
+        # Enemy shooting
         enemy_bullet_now = time.time()
         if enemies_group and (enemy_bullet_now - last_enemy_bullet > ENEMY_BULLET_COOLDOWN):
             # Chooce enemy that shoots randomly
             enemy = random.choice(enemies_group.sprites())
             enemy_bullets_group.add(Bullet(enemy.get_new_bullet_position(), enemy_bullet, -1))
             last_enemy_bullet = enemy_bullet_now # Update timer
-
+        
+        # Update bullets, enemies and enemy bullets
         bullets_group.update(dt)
         enemy_bullets_group.update(dt)
         enemies_group.update(bullets_group, dt)
+        # Check if spaceship has been hit
         spaceship.check_if_hit(enemy_bullets_group, enemies_group)
 
         # RENDER GRAPHICS
