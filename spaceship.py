@@ -45,6 +45,12 @@ class Spaceship(pygame.sprite.Sprite):
             enemy_hit.kill()
             self.lives -= 1
 
+        # Lose health if enemy gets to the bottom of the screen
+        for enemy in enemies_group.sprites():
+            if enemy.rect.top > SCREEN_HEIGHT:
+                self.lives -= 1
+                enemy.kill()
+
         if self.lives == 0:
             return True
         
