@@ -21,9 +21,22 @@ def load_enemy_images() -> list:
     return images
 
 
+def game_over_screen(screen, background):
+    font = pygame.font.SysFont("fixedsys", 50)
+    text = font.render("GAME OVER", True, WHITE)
+    text_rect = text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+
+    # Render screen
+    screen.blit(background, (0, 0))
+    screen.blit(text, text_rect)
+    pygame.display.flip()
+
+
 def main():
     pygame.init()
     clock = pygame.time.Clock()
+
+    game_over = False
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Space Invaders")
@@ -48,6 +61,7 @@ def main():
 
     # GAME LOOP
     while True:
+
         # Delta time
         time_now = time.time()
         dt = time_now - previous_time
@@ -72,6 +86,10 @@ def main():
                 bullets_group.add(Bullet(spaceship.get_new_bullet_pos(), bullet))
                 last_bullet = current_bullet
 
+        if game_over:
+            game_over_screen(screen, background)
+            continue
+
         # GAME LOGIC
         
         # Spawn enemies
@@ -92,8 +110,8 @@ def main():
         bullets_group.update(dt)
         enemy_bullets_group.update(dt)
         enemies_group.update(bullets_group, dt)
-        # Check if spaceship has been hit
-        spaceship.check_if_hit(enemy_bullets_group, enemies_group)
+        # Check if spaceship has been hit and for game over
+        game_over = spaceship.check_if_hit(enemy_bullets_group, enemies_group)
 
         # RENDER GRAPHICS
         screen.blit(background, (0, 0))

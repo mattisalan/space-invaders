@@ -34,7 +34,7 @@ class Spaceship(pygame.sprite.Sprite):
     def get_new_bullet_pos(self) -> list[int]:
         return [self.rect.centerx, self.rect.top]
     
-    def check_if_hit(self, enemy_bullets_group, enemies_group):
+    def check_if_hit(self, enemy_bullets_group, enemies_group) -> bool:
         bullet_hit = pygame.sprite.spritecollideany(self, enemy_bullets_group)
         if bullet_hit is not None:
             bullet_hit.kill()
@@ -44,6 +44,11 @@ class Spaceship(pygame.sprite.Sprite):
         if enemy_hit is not None:
             enemy_hit.kill()
             self.lives -= 1
+
+        if self.lives == 0:
+            return True
+        
+        return False
 
     def draw_healtbar(self, screen) -> None:
         health_ratio = self.lives / MAX_HEALTH
