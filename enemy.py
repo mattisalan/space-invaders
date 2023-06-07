@@ -20,6 +20,9 @@ class Enemy(pygame.sprite.Sprite):
         self.x = self.rect.x
         self.y = self.rect.y
 
+    def get_new_bullet_position(self):
+        return [self.rect.centerx, self.rect.bottom]
+
     def move_down(self, dt) -> None:
         self.y += ENEMY_SPEED * dt
         self.rect.y = round(self.y)

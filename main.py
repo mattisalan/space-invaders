@@ -1,4 +1,5 @@
 import time
+import random
 
 import pygame
 from pygame.locals import *
@@ -17,15 +18,22 @@ def main():
     pygame.display.set_caption("Space Invaders")
 
     background = pygame.image.load("img/bg.png").convert()
+    bullet = pygame.image.load("img/bullet.png").convert_alpha()
+    enemy_bullet = pygame.image.load("img/enemy_bullet.png").convert_alpha()
+
     # Game objects
     spaceship = Spaceship()
     spaceship_group = pygame.sprite.GroupSingle(spaceship)
     bullets_group = pygame.sprite.Group()
     enemies_group = pygame.sprite.Group()
+    enemy_bullets_group = pygame.sprite.Group()
 
-    previous_time = time.time()
-    last_bullet = time.time()
-    enemy_spawn_time = time.time()
+    # Timers
+    previous_time = time.time() # Delta time
+    last_bullet = time.time() # Player shooting
+    enemy_spawn_time = time.time() # Enemy spawn
+    last_enemy_bullet = time.time() # Enemy shooting
+
     # GAME LOOP
     while True:
         # Delta time
@@ -49,7 +57,7 @@ def main():
         if keys[K_UP]:
             current_bullet = time.time()
             if current_bullet - last_bullet > BULLET_COOLDOWN:
-                bullets_group.add(Bullet(spaceship.get_new_bullet_pos()))
+                bullets_group.add(Bullet(spaceship.get_new_bullet_pos(), bullet))
                 last_bullet = current_bullet
 
         # GAME LOGIC
@@ -60,14 +68,22 @@ def main():
             enemies_group.add(Enemy())
             enemy_spawn_time = enemy_spawn_time_now
 
+        enemy_bullet_now = time.time()
+        if enemies_group and (enemy_bullet_now - last_enemy_bullet > ENEMY_BULLET_COOLDOWN):
+            # Chooce enemy that shoots randomly
+            enemy = random.choice(enemies_group.sprites())
+            enemy_bullets_group.add(Bullet(enemy.get_new_bullet_position(), enemy_bullet, -1))
+            last_enemy_bullet = enemy_bullet_now # Update timer
+
         bullets_group.update(dt)
+        enemy_bullets_group.update(dt)
         enemies_group.update(bullets_group, dt)
 
         # RENDER GRAPHICS
-        screen.fill(WHITE)
         screen.blit(background, (0, 0))
         spaceship_group.draw(screen)
         bullets_group.draw(screen)
+        enemy_bullets_group.draw(screen)
         enemies_group.draw(screen)
 
         # Update screen
